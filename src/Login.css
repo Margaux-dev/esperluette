@@ -1,0 +1,70 @@
+.login{
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+}
+
+.login-container{
+    width: 96vw;
+    max-width: 450px;
+    height: 98vh;
+    max-height: 600px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border:none;
+    border-radius: 20px;
+    box-shadow: 0 0 20px 3px rgba(167, 255, 243, 0.5);
+}
+@media screen and (max-width: 767px) {
+    .login-container{
+        width: calc(100vw - 14px);
+        height: calc(100vh - 14px);
+        max-height: 800px;
+        border-radius: 0;
+    }
+}
+
+.login-container h1{
+    margin-bottom: 25px;
+    color: rgb(222, 222, 223);
+    font-size: 3.8rem;
+    font-weight: 600;
+    text-align: center;
+    text-transform: uppercase;
+}
+
+.login-text h2{
+    margin: 25px auto 8px auto;
+    color: rgb(222, 222, 223);
+    font-size: 3.1rem;
+    font-weight: 600;
+    text-align: center;
+}
+
+.login-text p{
+    margin-bottom: 25px;
+    color: rgb(211, 219, 219);
+    font-size: 2.2rem;
+    text-align: center;
+}
+
+.login-container .MuiButtonBase-root{
+    padding: 10px 20px;
+    border: 2px solid rgb(66, 212, 200);
+    border-radius: 20px;
+    color: #fff;
+    font-size: 1.9rem;
+    background-color: rgb(66, 212, 200);
+}
+
+.login-container .MuiButtonBase-root:hover{
+    color: #fff;
+    background-color: rgb(41, 175, 168);
+    border: 2px solid rgb(41, 175, 168);
+}
