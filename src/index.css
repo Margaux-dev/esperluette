@@ -1,9 +1,24 @@
+:root{
+  --fontFamily: Arial, Helvetica, sans-serif;
+  --backgroundImage: url("https://i.pinimg.com/originals/3b/8a/d2/3b8ad2c7b1be2caf24321c852103598a.jpg");
+  --firstColor: #031c38;
+  --secondColor: #0e2947;
+  --borderColor: rgb(98, 135, 184);
+  --titleColor: rgb(206, 225, 251);
+  --pColor: rgb(182, 184, 187);
+  --buttonColor: #143457;
+  --sidebarSearchColor: #79a3d1;
+  --messageColor: rgb(27, 99, 158);
+  --messageSentColor: rgb(162, 208, 246);
+  --sendColor: #2c5386;
+}
+
 *{
   margin: 0;
   padding: 0;
   box-sizing: border-box;
   outline: none;
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--fontFamily);
 }
 
 html{
