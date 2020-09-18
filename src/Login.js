@@ -1,5 +1,6 @@
 import React from 'react';
 import { Button } from "@material-ui/core";
+import firebase from "firebase";
 import { auth, provider } from "./firebase";
 import "./Login.css";
 import { useStateValue } from './StateProvider';
@@ -16,9 +17,16 @@ function Login() {
             dispatch({
                 type: actionTypes.SET_USER,
                 user: result.user
-            })
+            });
+            firebase.auth().onAuthStateChanged(user=>{
+                if (user) {
+                    // store the user on local storage
+                    localStorage.setItem('user', JSON.stringify(user));
+                }
+            });
         })
         .catch((error) => alert(error.message));
+        
     };
 
     return (
