@@ -5,26 +5,49 @@ import { useParams } from 'react-router-dom';
 import { useStateValue } from "./StateProvider";
 import "emoji-mart/css/emoji-mart.css";
 import { Picker } from "emoji-mart";
-
-import "./Chat.css";
+import ScrollToBottom from "react-scroll-to-bottom";
 import db from './firebase';
 import firebase from "firebase";
+import "./Chat.css";
 
 function Chat() {
-    const [seed, setSeed] = useState("");
     const [textarea, setTextarea] = useState("");
     const { roomId } = useParams();
     const [roomName, setRoomName] = useState("");
+    const [roomPic, setRoomPic] = useState("");
     const [messages, setMessages] = useState([]);
     // eslint-disable-next-line
     const [{ user }, dispatch] = useStateValue();
+    let userLocal = JSON.parse(localStorage.getItem("user"));
 
     useEffect(() => {
         if (roomId) {
             db
                 .collection("rooms")
                 .doc(roomId)
-                .onSnapshot((snapshot) => setRoomName(snapshot.data().name));
+                .onSnapshot((snapshot) => {
+                    if (snapshot.data().guestA !== "") {
+                        if (snapshot.data().guestA === userLocal.displayName) {
+                            setRoomName(snapshot.data().guestB);
+                        } else {
+                            setRoomName(snapshot.data().guestA);
+                        }
+                    } else {
+                        setRoomName(snapshot.data().name);
+                    }
+                });
+            db
+                .collection("rooms")
+                .doc(roomId)
+                .onSnapshot((snapshot) => {
+                    if (snapshot.data().picA === userLocal.photoURL) {
+                        setRoomPic(snapshot.data().picB)
+                    } else if (snapshot.data().picB === userLocal.photoURL) {
+                        setRoomPic(snapshot.data().picA)
+                    } else {
+                        setRoomPic(snapshot.data().photo)
+                    }
+                });
             db
                 .collection("rooms")
                 .doc(roomId)
@@ -32,21 +55,19 @@ function Chat() {
                 .orderBy("timestamp", "asc")
                 .onSnapshot(snapshot => (setMessages(snapshot.docs.map(doc => doc.data()))));
         }
-    }, [roomId]);
-
-    useEffect(() => {
-        setSeed(Math.floor(Math.random() * 5000));
-    }, []);
+    }, 
+    //eslint-disable-next-line
+    [roomId]);
 
     const sendMessage = (e) => {
         e.preventDefault();
-        console.log("coucou" + textarea);
         db.collection("rooms").doc(roomId).collection("messages").add({
             message: textarea,
-            name: user.displayName,
+            name: userLocal.displayName,
             timestamp: firebase.firestore.FieldValue.serverTimestamp()
         });
         setTextarea("");
+        document.querySelector("textarea").focus();
     };
 
     const addEmoji = (emoji, e) => {
@@ -63,14 +84,16 @@ function Chat() {
         }
     };
 
+    let date = new Date(messages[messages.length -1]?.timestamp?.toDate()).toLocaleString("fr-FR", {hc: "h24", day:"2-digit", month:"2-digit", year: "2-digit", hour:"2-digit", minute:"2-digit"});
+
     return (
         <div className="chat">
             <div className="chat-header">
-                <Avatar src={`https://avatars.dicebear.com/api/avataaars/${seed}.svg`} />
+                <Avatar src={roomPic} />
                 <div className="chat-header-info">
                     <h2>{roomName}</h2>
-                    <p>Dernière connexion : le {" "}
-                    {new Date(messages[messages.length -1]?.timestamp?.toDate()).toLocaleString("fr-FR", {hc: "h24", day:"2-digit", month:"2-digit", year: "2-digit", hour:"2-digit", minute:"2-digit"})}.</p>
+                    <p>{date !== "Invalid Date" ? ("Dernier message le : " + date) : ""}
+                    </p>
                 </div>
                 <div className="chat-header-right">
                     <IconButton>
@@ -84,15 +107,15 @@ function Chat() {
                     </IconButton>
                 </div>
             </div>
-            <div className="chat-body">
+            <ScrollToBottom className="chat-body" style={{behavior: "smooth"}}>
                 {messages.map(message => (
-                    <p className={`chat-message ${message.name === user.displayName && "chat-receiver"}`}>
-                        <span className="chat-name">{message.name === user.displayName ? "" : message.name}</span>
+                    <p className={`chat-message ${message.name === userLocal.displayName && "chat-receiver"} ${message.name !== userLocal.displayName && "chat-sender"}`} style={{whiteSpace: "pre-line"}}>
+                        <span className="chat-name">{message.name === userLocal.displayName ? "" : message.name}</span>
                         {message.message}
                         <span className="chat-timestamp">{new Date(message.timestamp?.toDate()).toLocaleString("fr-FR", {hc: "h24", day:"2-digit", month:"2-digit", year: "2-digit", hour:"2-digit", minute:"2-digit"})}</span>
                     </p>
                 ))}
-            </div>
+            </ScrollToBottom>
             <div className="chat-footer">
                 <InsertEmoticon onClick={showPicker} />
                 <div className="emoji-picker" style={{display: "none"}}>
@@ -122,7 +145,7 @@ function Chat() {
                     <textarea 
                       value={textarea} 
                       onChange={(e) => setTextarea(e.target.value)} 
-                      placeholder="Écrivez votre message ici"
+                      placeholder="Écrivez votre message ici et cliquez sur le bouton pour envoyer"
                       type="text"
                     />
                     <button 
