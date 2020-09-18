@@ -2,6 +2,7 @@
     display: flex;
     flex-direction: column;
     flex: 0.2;
+    border-right: 1px solid var(--borderColor);
 }
 
 .sidebar-header{
@@ -9,30 +10,159 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    border-right: 1px solid rgb(98, 135, 184);
+}
+
+.sidebar-header-left{
+    display: flex;
+    align-items: center;
+}
+
+.sidebar-header-left .username{
+    margin: 0 5px 0 8px;
+    display: flex;
+    flex-wrap: wrap;
+    color: var(--titleColor);
+    font-size: 1.4rem;
 }
 
 .sidebar-header-right{
-    min-width: 8vw;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
+    position: relative;
 }
 
 .sidebar-header-right .MuiSvgIcon-root{
-    color: rgb(206, 225, 251);
+    color: var(--titleColor);
     font-size: 2.4rem !important;
 }
 .sidebar-header-right .MuiIconButton-root{
-    background-color: #143457;
+    background-color: var(--buttonColor);
 }
+
+ul.MuiList-root.MuiMenu-list.MuiList-padding{
+    background-color: var(--secondColor);
+    color: var(--titleColor);
+}
+ul.MuiList-root.MuiMenu-list.MuiList-padding li{
+    font-size: 1.3rem;
+}
+ul.MuiList-root.MuiMenu-list.MuiList-padding li:hover{
+    background-color: var(--buttonColor);
+}
+
+.theme-picker{
+    width: 300px;
+    padding: 20px;
+    position: absolute;
+    top: 0;
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: var(--titleColor);
+    background: var(--firstColor);
+    border: none;
+    border-radius: 10px;
+    box-shadow: 0 0 10px 1px var(--buttonColor);
+    z-index: 99;
+}
+
+.theme-picker h3{
+    font-size: 1.4rem;
+    font-weight: 400;
+}
+
+.theme-picker .MuiSvgIcon-root{
+    align-self: flex-end;
+    cursor: pointer;
+}
+
+.theme-picker .color-picker, .theme-picker .background-picker{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.theme-picker .color-picker .colors{
+    margin: 8px 0 15px 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+}
+
+.theme-picker .color-picker .colors .color{
+    width: 26px;
+    height: 26px;
+    border: 1px solid transparent;
+    border-radius: 13px;
+    cursor: pointer;
+}
+.theme-picker .color-picker .colors .color.color-active{
+    border: 1px solid var(--titleColor) !important;
+}
+
+.theme-picker .color-picker .colors .color.color-1{
+    border: 1px solid #031c38;
+    background-color: #031c38;
+}
+.theme-picker .color-picker .colors .color.color-2{
+    border: 1px solid rgb(207, 46, 81);
+    background-color: rgb(207, 46, 81);
+}
+.theme-picker .color-picker .colors .color.color-3{
+    border: 1px solid rgb(105, 83, 165);
+    background-color: rgb(105, 83, 165);
+}
+.theme-picker .color-picker .colors .color.color-4{
+    border: 1px solid rgb(223, 108, 0);
+    background-color: rgb(223, 108, 0);
+}
+.theme-picker .color-picker .colors .color.color-5{
+    border: 1px solid rgb(223, 255, 213);
+    background-color: rgb(223, 255, 213);
+}
+.theme-picker .color-picker .colors .color.color-6{
+    border: 1px solid rgb(12, 110, 122);
+    background-color: rgb(12, 110, 122);
+}
+
+.theme-picker .color-picker .colors .color:hover{
+    width: 26px;
+    height: 26px;
+    border: 1px solid var(--titleColor);
+    border-radius: 13px;
+    cursor: pointer;
+}
+
+.theme-picker .background-picker .backgrounds{
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.theme-picker .background-picker .backgrounds .background{
+    margin: 4px;
+    display: grid;
+    place-items: center;
+    cursor: pointer;
+    border: 1px solid transparent;
+}
+.theme-picker .background-picker .backgrounds .background:hover{
+    border: 1px solid var(--titleColor);
+}
+
+.theme-picker .background-picker .backgrounds .background img{
+    width: 120px;
+    height: 75px;
+}
+
 
 .sidebar-search{
     height: 45px;
     padding: 10px 5px;
     display: flex;
     align-items: center;
-    background-color: #79a3d1;
+    background-color: var(--borderColor) !important;
 }
 
 .sidebar-search-container{
@@ -55,14 +185,14 @@
 }
 
 .sidebar-search-container .MuiSvgIcon-root{
-    color: rgb(93, 126, 156);
+    color: rgb(126, 126, 126);
     font-size: 1.6rem;
     margin-right: 5px;
 }
 
 .sidebar-chats{
     flex: 1;
-    background-color: #0e2947;
+    background-color: var(--secondColor);
     overflow: scroll;
     border-bottom-left-radius: 20px;
 }
